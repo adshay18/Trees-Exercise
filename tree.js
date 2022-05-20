@@ -34,7 +34,6 @@ class Tree {
 		let queue = [ this.root ];
 		while (queue.length) {
 			const current = queue.shift();
-
 			if (current !== null) {
 				if (current.val % 2 === 0) {
 					count++;
@@ -50,7 +49,21 @@ class Tree {
 	/** numGreater(lowerBound): return a count of the number of nodes
    * whose value is greater than lowerBound. */
 
-	numGreater(lowerBound) {}
+	numGreater(lowerBound, count = 0) {
+		let queue = [ this.root ];
+		while (queue.length) {
+			const current = queue.shift();
+			if (current !== null) {
+				if (current.val > lowerBound) {
+					count++;
+				}
+				for (let child of current.children) {
+					queue.push(child);
+				}
+			}
+		}
+		return count;
+	}
 }
 
 module.exports = { Tree, TreeNode };
