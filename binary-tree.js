@@ -31,45 +31,60 @@ class BinaryTree {
 				queue.push(current.right);
 			} else return depth;
 		}
-		return depth;
 	}
 
 	/** maxDepth(): return the maximum depth of the tree -- that is,
    * the length of the longest path from the root to a leaf. */
 
-	maxDepth() {}
-
+	maxDepth() {
+		if (!this.root) return 0;
+		function goDeeper(node) {
+			if (!node.left && !node.right) return 1;
+			if (!node.left) return goDeeper(node.right) + 1;
+			if (!node.right) return goDeeper(node.left) + 1;
+			return Math.max(goDeeper(node.left), goDeeper(node.right)) + 1;
+		}
+		return goDeeper(this.root);
+	}
 	/** maxSum(): return the maximum sum you can obtain by traveling along a path in the tree.
    * The path doesn't need to start at the root, but you can't visit a node more than once. */
 
-	maxSum() {}
+	maxSum() {
+		let sum = 0;
+		if (!this.root) return 0;
+		function sumPaths(node) {
+			if (!node) return 0;
+			const left = sumPaths(node.left);
+			const right = sumPaths(node.right);
+			sum = Math.max(sum, node.val + left + right);
+			return Math.max(left + node.val, right + node.val);
+		}
+
+		sumPaths(this.root);
+		return sum;
+	}
 
 	/** nextLarger(lowerBound): return the smallest value in the tree
    * which is larger than lowerBound. Return null if no such value exists. */
 
-	nextLarger(lowerBound) {}
+	nextLarger(lowerBound) {
+		if (!this.root) return null;
+		let queue = [ this.root ];
+		let val = null;
 
-	/** Further study!
-   * areCousins(node1, node2): determine whether two nodes are cousins
-   * (i.e. are at the same level but have different parents. ) */
-
-	areCousins(node1, node2) {}
-
-	/** Further study!
-   * serialize(tree): serialize the BinaryTree object tree into a string. */
-
-	static serialize() {}
-
-	/** Further study!
-   * deserialize(stringTree): deserialize stringTree into a BinaryTree object. */
-
-	static deserialize() {}
-
-	/** Further study!
-   * lowestCommonAncestor(node1, node2): find the lowest common ancestor
-   * of two nodes in a binary tree. */
-
-	lowestCommonAncestor(node1, node2) {}
+		while (queue.length) {
+			let current = queue.shift();
+			if (val === null && current.val > lowerBound) {
+				val = current.val;
+			}
+			if (current.val > lowerBound && current.val < val) {
+				val = current.val;
+			}
+			if (current.left) queue.push(current.left);
+			if (current.right) queue.push(current.right);
+		}
+		return val;
+	}
 }
 
 module.exports = { BinaryTree, BinaryTreeNode };
