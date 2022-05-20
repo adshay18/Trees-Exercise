@@ -16,7 +16,6 @@ class Tree {
 
 	sumValues(total = 0) {
 		let queue = [ this.root ];
-		console.log(queue, queue.length);
 		while (queue.length) {
 			const current = queue.shift();
 			if (current !== null) {
@@ -31,7 +30,22 @@ class Tree {
 
 	/** countEvens(): count all of the nodes in the tree with even values. */
 
-	countEvens() {}
+	countEvens(count = 0) {
+		let queue = [ this.root ];
+		while (queue.length) {
+			const current = queue.shift();
+
+			if (current !== null) {
+				if (current.val % 2 === 0) {
+					count++;
+				}
+				for (let child of current.children) {
+					queue.push(child);
+				}
+			}
+		}
+		return count;
+	}
 
 	/** numGreater(lowerBound): return a count of the number of nodes
    * whose value is greater than lowerBound. */
